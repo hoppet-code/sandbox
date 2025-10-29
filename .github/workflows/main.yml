@@ -1,3 +1,36 @@
+name: Release (with Submodules Only)
+
+on:
+  push:
+    tags:
+      - 'hoppet-'   # e.g., v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code (with submodules)
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Create tarball with submodules
+        run: |
+          mkdir -p dist
+          tar czf dist/${{ github.event.repository.name }}-${{ github.ref_name }}-with-submodules.tar.gz .
+
+      - name: Create GitHub release (without default tarballs)
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
+          files: dist/*.tar.gz
+
+
 name: Build Release Tarball (with Submodules)
 
 on:
