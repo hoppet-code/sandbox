@@ -3,7 +3,7 @@ name: Release (with Submodules Only)
 on:
   push:
     tags:
-      - 'hoppet-'   # e.g., v1.0.0
+      - 'hoppet-[0-9]*'   # e.g., hoppet-1.0.0
 
 permissions:
   contents: write
